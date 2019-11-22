@@ -99,13 +99,22 @@ automation:
 # this is where usercodes get deleted, for the many locks there is a known issue with clear usercode
 # so this sets a random code, of course that means there is an unknown code in the cleared
 # slots.  If you dont like that set a specific code that only you know using - usercode: number_here
-      - service: lock.set_usercode
-        data_template:
-          usercode: >-
-            {{ range(1000, 9999) | random }}
+# EDIT From  Update 9/4/18 in lock_package_for_two_deadbolts.txt
+      # - service: lock.set_usercode
+      #   data_template:
+      #     usercode: >-
+      #       {{ range(1000, 9999) | random }}
+      #     node_id: >-
+      #       {{ states.lock.lock_front_door_lock.attributes.node_id }}
+
+      #     code_slot: >-
+      #       {% set object_id = trigger.to_state.object_id %}
+      #       {% set code_slot = "_".join(object_id.split("_")[2:-2]) %}
+      #       {{ code_slot }}
+      - service: lock.clear_usercode
+        data_template:      
           node_id: >-
             {{ states.lock.lock_front_door_lock.attributes.node_id }}
-
           code_slot: >-
             {% set object_id = trigger.to_state.object_id %}
             {% set code_slot = "_".join(object_id.split("_")[2:-2]) %}
